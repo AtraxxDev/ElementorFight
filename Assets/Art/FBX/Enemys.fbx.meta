@@ -11,7 +11,7 @@ ModelImporter:
     second: Armature|ArmatureAction.001
   - first:
       74: 6093225430303232669
-    second: Kick
+    second: Hit
   - first:
       74: 7630842211958507531
     second: Punch_Enemy
@@ -138,7 +138,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Kick
+      name: Hit
       takeName: Armature|ArmatureAction.002
       internalID: 0
       firstFrame: 190
