@@ -2,122 +2,124 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FABRIK : MonoBehaviour
+public class Fabrik : MonoBehaviour
 {
-    [SerializeField] Transform[] bones;
-    private float[] bonesLength;
+    [SerializeField]
+    Transform[] bones;
+    [SerializeField]
+    float[] boneLeghts;
 
-    [SerializeField] int solverIterations = 5;
+    [SerializeField]
+    int solverIterations = 5;
 
-    [SerializeField] Transform targetPosition;
+    [SerializeField]
+    Transform target;
 
-    private void Start()
+    Vector3 startPosition;
+    // Start is called before the first frame update
+    void Start()
     {
-        bonesLength=new float[bones.Length];
+        boneLeghts = new float[bones.Length];
 
-        for(int i = 0; i < bonesLength.Length; i++)
+        for (int i = 0; i < bones.Length; i++)
         {
-            if(i<bones.Length-1)
+            if (i < bones.Length - 1)
             {
-                bonesLength[i] = (bones[i + 1].position - bones[i].position).magnitude;
+                boneLeghts[i] = (bones[i + 1].position - bones[i].position).magnitude;
             }
             else
             {
-                //Si es el último hueso la long es 0
-                bonesLength[i] = 0f;
+                boneLeghts[i] = 0;
             }
         }
+
+        startPosition = bones[0].position;
+
     }
 
-    private void Update()
+    // Update is called once per frame
+    void Update()
     {
         SolveIK();
     }
 
     void SolveIK()
     {
-        Vector3[] FinalBonesPositions=new Vector3[bones.Length];
+        Vector3[] finalBonePositions = new Vector3[bones.Length];
 
-        //Gaurdamos las posiciones actuales de los huesos
+        for (int i = 0; i < bones.Length; i++)
         {
-            for(int i=0; i<bonesLength.Length; i++)
+            finalBonePositions[i] = bones[i].position;
+        }
+
+        for (int i = 0; i < solverIterations; i++)
+        {
+            finalBonePositions = SolveForwardPositions(SolveBackwardPositions(finalBonePositions));
+        }
+
+        for (int i = 0; i < bones.Length; i++)
+        {
+            bones[i].position = finalBonePositions[i];
+
+            if (i != bones.Length - 1)
             {
-                FinalBonesPositions[i] = bones[i].position;
+                bones[i].rotation = Quaternion.LookRotation(finalBonePositions[i + 1] - bones[i].position);
             }
-
-            //Aplicamos FABROK tantas veces como se indique en "solveIterations"
-            for(int i=0;i<solverIterations; i++)
+            else
             {
-                FinalBonesPositions = SolveForwardPositions(SolveInversePosition(FinalBonesPositions));
-            }
+                bones[i].rotation = Quaternion.LookRotation(target.position - bones[i].position);
 
-            //Aplicamos los resultados a cada hueso
-            for(int i=0;i<bones.Length; i++)
-            {
-                bones[i].position = FinalBonesPositions[i];
-
-                //Aplicamos rotaciones
-                if(i !=bones.Length-1)
-                {
-                    bones[i].rotation = Quaternion.LookRotation(FinalBonesPositions[i + 1] - bones[i].position);
-                }
-                else
-                {
-                    bones[i].rotation = Quaternion.LookRotation(targetPosition.position - bones[i].position);
-                }
             }
         }
 
 
     }
 
-    Vector3[] SolveInversePosition(Vector3[] forwardPositions)
-    {
-        Vector3[] inversePosition= new Vector3[forwardPositions.Length];
 
-        //Calculamos las posiciones "ideales" desde el último hasta el primer hueso
-        for (int i=(forwardPositions.Length-1);i>=0;i--)
+    Vector3[] SolveBackwardPositions(Vector3[] forwardPositions)
+    {
+        Vector3[] inversePositions = new Vector3[forwardPositions.Length];
+
+        for (int i = (forwardPositions.Length - 1); i >= 0; i--)
         {
-            if(i==forwardPositions.Length-1)
+            if (i == forwardPositions.Length - 1)
             {
-                //Si es el último hueso, la posición prima es la misma que la posicion objetivo
-                inversePosition[i]=targetPosition.position;
+                inversePositions[i] = target.position;
             }
             else
             {
-                Vector3 posPrimaSiguiente = inversePosition[i + 1];
-                Vector3 posBaseActual = forwardPositions[i];
-                Vector3 direccion=(posBaseActual-posPrimaSiguiente).normalized;
-                float longitud = bonesLength[i];
-                inversePosition[i]=posPrimaSiguiente+(direccion*longitud);
+                Vector3 nextPosition = inversePositions[i + 1];
+                Vector3 currentPosition = forwardPositions[i];
+                Vector3 direction = (currentPosition - nextPosition ).normalized;
+                float lenght = boneLeghts[i];
+                inversePositions[i] = nextPosition + (direction * lenght);
             }
         }
-        return inversePosition;
+
+        return inversePositions;
     }
 
-    Vector3[] SolveForwardPositions(Vector3[] inversePosition)
-    {
-        Vector3[] forwardPosition=new Vector3[inversePosition.Length];
 
-        //Calculamos las posiciones "reales" desde el primer hasta el último
-        for(int i=0;i<inversePosition.Length;i++)
+    Vector3[] SolveForwardPositions(Vector3[] inversePositions)
+    {
+        Vector3[] forwardPositions = new Vector3[inversePositions.Length];
+
+        for (int i = 0; i < inversePositions.Length; i++)
         {
-            if(i==0)
+            if (i == 0)
             {
-                //Si es el primer hueso, la posición es la misma que la posición del primer hueso base
-                forwardPosition[i] = bones[0].position;
+                forwardPositions[i] = startPosition;
             }
             else
             {
-                Vector3 posPrimaActual = inversePosition[i];
-                Vector3 posPirmaSegundaAnterior = forwardPosition[i - 1];
-                Vector3 direccion = (posPrimaActual - forwardPosition[i-1]).normalized;
-                float longitud = bonesLength[i - 1];
-                forwardPosition[i] = posPirmaSegundaAnterior + (direccion * longitud);
+                Vector3 currentPosition = inversePositions[i];
+                Vector3 previousPosition = forwardPositions[i - 1];
+                Vector3 direction = (currentPosition - previousPosition).normalized;
+                float lenght = boneLeghts[i - 1];
+                forwardPositions[i] = previousPosition + (direction * lenght);
             }
         }
-        return forwardPosition;
+
+        return forwardPositions;
     }
 }
-
-
