@@ -5,8 +5,8 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     [SerializeField] private float _maxHealth = 3;
-    [SerializeField] private GameObject _deadEffect,_hitEffect;
-    private float _currentHealth;
+    //[SerializeField] private GameObject _deadEffect,_hitEffect;
+    public float _currentHealth;
     public Animator _animator;
 
     [SerializeField] private HealthBar _healthBar;
@@ -28,6 +28,7 @@ public class Health : MonoBehaviour
     {
         if (_currentHealth <= 0)
         {
+            _healthBar.UpdateHealthBar(_maxHealth, _currentHealth);
             // se instancia el efecto de muerte (Particle)
             // Active Ragdoll cuando muere 
             // se le activa o calcula la fuerza para que salga volando

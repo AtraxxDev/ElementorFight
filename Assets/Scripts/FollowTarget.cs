@@ -7,6 +7,8 @@ public class FollowTarget : MonoBehaviour
     [SerializeField] private Transform target;
     [SerializeField] private float moveSpeed = 5.0f;
 
+
+     
     void Update()
     {
         if (target != null)
