@@ -5,23 +5,30 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     [SerializeField] private float _maxHealth = 3;
-    //[SerializeField] private GameObject _deadEffect,_hitEffect;
     public float _currentHealth;
     public Animator _animator;
 
     [SerializeField] private HealthBar _healthBar;
+
+    // Configura estas variables según tus necesidades.
+    [SerializeField] private float forceMagnitude = 100f;
+    [SerializeField] private float forceMagnitude2 = 20f;
+    [SerializeField] private Vector3 forceDirection = -Vector3.forward; // Empujará hacia atrás en la dirección Z negativa.
+
+    private Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
     {
         _currentHealth = _maxHealth;
         _healthBar.UpdateHealthBar(_maxHealth, _currentHealth);
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Obtén el componente Rigidbody del GameObject
+        rb = GetComponent<Rigidbody>();
+        if (rb == null)
+        {
+            Debug.LogWarning("El GameObject no tiene un Rigidbody adjunto.");
+        }
     }
 
     public void Damage()
@@ -29,28 +36,34 @@ public class Health : MonoBehaviour
         if (_currentHealth <= 0)
         {
             _healthBar.UpdateHealthBar(_maxHealth, _currentHealth);
-            // se instancia el efecto de muerte (Particle)
-            // Active Ragdoll cuando muere 
-            // se le activa o calcula la fuerza para que salga volando
 
-            Destroy(gameObject,5);
+            if (rb != null)
+            {
+                rb.AddForce(forceDirection * forceMagnitude, ForceMode.Impulse);
+            }
+
+           
+            _animator.enabled = false;
+
+
+            Destroy(gameObject, 3.0f);
         }
-
         else
         {
             _healthBar.UpdateHealthBar(_maxHealth, _currentHealth); // Se va actualizando la vida mediante el daño
-            // se pone efecto de hit damage (Particle)
-            StartCoroutine("changeAnim");
+            // Se pone efecto de hit damage (Particle)
+            StartCoroutine("ChangeAnim");
+            if (rb != null)
+            {
+                rb.AddForce(forceDirection * forceMagnitude2, ForceMode.Impulse);
+            }
         }
     }
 
-    IEnumerator changeAnim() 
+    IEnumerator ChangeAnim()
     {
-        _animator.SetBool("_Hit2", true); // manda la animacion _HIt
+        _animator.SetBool("_Hit2", true); // Manda la animación _Hit
         yield return new WaitForSeconds(0.5f);
-        _animator.SetBool("_Hit2", false); // manda la animacion _HIt
-
-
+        _animator.SetBool("_Hit2", false); // Manda la animación _Hit
     }
-
 }
