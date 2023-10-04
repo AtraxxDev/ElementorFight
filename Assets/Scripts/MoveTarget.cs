@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoveTarget : MonoBehaviour
 {
-    public float speed = 3;
+    [SerializeField] private float speed = 3;
     public Punch punchRef;
 
     private void Start()

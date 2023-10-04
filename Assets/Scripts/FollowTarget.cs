@@ -6,9 +6,9 @@ public class FollowTarget : MonoBehaviour
 {
     [SerializeField] private Transform target;
     [SerializeField] private float moveSpeed = 5.0f;
+    public Punch punchRef;
 
 
-     
     void Update()
     {
         if (target != null)
@@ -22,5 +22,11 @@ public class FollowTarget : MonoBehaviour
             // Mueve al enemigo hacia el objetivo
             transform.position += directionToTarget.normalized * moveSpeed * Time.deltaTime;
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("HitEnemy");
+        punchRef.PunchEnemy();
     }
 }
