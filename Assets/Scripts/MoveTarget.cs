@@ -21,8 +21,12 @@ public class MoveTarget : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("HitEnemy");
-        punchRef.PunchEnemy();
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("HitEnemy");
+            punchRef.PunchEnemy();
+        }
+        
     }
 
    

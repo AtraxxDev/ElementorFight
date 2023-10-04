@@ -26,7 +26,11 @@ public class FollowTarget : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("HitEnemy");
-        punchRef.PunchEnemy();
+        if (other.gameObject.CompareTag("Player"))
+        {
+            //Debug.Log("HitEnemy");
+            punchRef.PunchEnemy();
+        }
+        
     }
 }
