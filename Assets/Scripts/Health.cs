@@ -32,13 +32,25 @@ public class Health : MonoBehaviour
             // se instancia el efecto de muerte (Particle)
             // Active Ragdoll cuando muere 
             // se le activa o calcula la fuerza para que salga volando
+
+            Destroy(gameObject,5);
         }
 
         else
         {
             _healthBar.UpdateHealthBar(_maxHealth, _currentHealth); // Se va actualizando la vida mediante el daño
             // se pone efecto de hit damage (Particle)
-            _animator.SetTrigger("_Hit"); // manda la animacion _HIt
+            StartCoroutine("changeAnim");
         }
     }
+
+    IEnumerator changeAnim() 
+    {
+        _animator.SetBool("_Hit2", true); // manda la animacion _HIt
+        yield return new WaitForSeconds(0.5f);
+        _animator.SetBool("_Hit2", false); // manda la animacion _HIt
+
+
+    }
+
 }
