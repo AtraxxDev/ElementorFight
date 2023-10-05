@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class HealthBar : MonoBehaviour
 {
     [SerializeField] private Image _healthbarSprite;
-    [SerializeField] private float _reduceSpeed = 2 ;
+    [SerializeField] private float _reduceSpeed = 2;
     private float _target = 1;
     // Start is called before the first frame update
     public void UpdateHealthBar(float maxHealth, float currentHealth)

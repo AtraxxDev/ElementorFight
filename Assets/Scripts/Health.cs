@@ -10,10 +10,10 @@ public class Health : MonoBehaviour
 
     [SerializeField] private HealthBar _healthBar;
 
-    // Configura estas variables según tus necesidades.
+    // Configura estas variables segï¿½n tus necesidades.
     [SerializeField] private float forceMagnitude = 100f;
     [SerializeField] private float forceMagnitude2 = 20f;
-    [SerializeField] private Vector3 forceDirection = -Vector3.forward; // Empujará hacia atrás en la dirección Z negativa.
+    [SerializeField] private Vector3 forceDirection = -Vector3.forward; // Empujarï¿½ hacia atrï¿½s en la direcciï¿½n Z negativa.
 
     private Rigidbody rb;
 
@@ -23,7 +23,7 @@ public class Health : MonoBehaviour
         _currentHealth = _maxHealth;
         _healthBar.UpdateHealthBar(_maxHealth, _currentHealth);
 
-        // Obtén el componente Rigidbody del GameObject
+        // Obtï¿½n el componente Rigidbody del GameObject
         rb = GetComponent<Rigidbody>();
         if (rb == null)
         {
@@ -42,15 +42,15 @@ public class Health : MonoBehaviour
                 rb.AddForce(forceDirection * forceMagnitude, ForceMode.Impulse);
             }
 
-           
-            _animator.enabled = false;
+
+            //_animator.enabled = false;
 
 
-            Destroy(gameObject, 3.0f);
+            Destroy(gameObject, 2.0f);
         }
         else
         {
-            _healthBar.UpdateHealthBar(_maxHealth, _currentHealth); // Se va actualizando la vida mediante el daño
+            _healthBar.UpdateHealthBar(_maxHealth, _currentHealth); // Se va actualizando la vida mediante el daï¿½o
             // Se pone efecto de hit damage (Particle)
             StartCoroutine("ChangeAnim");
             if (rb != null)
@@ -62,8 +62,8 @@ public class Health : MonoBehaviour
 
     IEnumerator ChangeAnim()
     {
-        _animator.SetBool("_Hit2", true); // Manda la animación _Hit
+        _animator.SetBool("_Hit2", true); // Manda la animaciï¿½n _Hit
         yield return new WaitForSeconds(0.5f);
-        _animator.SetBool("_Hit2", false); // Manda la animación _Hit
+        _animator.SetBool("_Hit2", false); // Manda la animaciï¿½n _Hit
     }
 }

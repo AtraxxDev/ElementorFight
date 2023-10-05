@@ -13,7 +13,7 @@ public class FollowTarget : MonoBehaviour
     {
         if (target != null)
         {
-            // Calcula la dirección hacia el objetivo
+            // Calcula la direcciï¿½n hacia el objetivo
             Vector3 directionToTarget = target.position - transform.position;
 
             // Mira siempre hacia el objetivo
@@ -24,13 +24,14 @@ public class FollowTarget : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             //Debug.Log("HitEnemy");
             punchRef.PunchEnemy();
+
         }
-        
+
     }
 }

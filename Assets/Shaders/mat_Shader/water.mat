@@ -48,14 +48,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _NoiseScale: 3.34
+    - _NoiseScale: 3.7
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Smooothness: 8.3
-    - _SpeedWave: 0.05
-    - _alpha: 1.34
-    - _displacement: 0.01
-    - _normalStrenght: 0.66
+    - _Smooothness: 1.41
+    - _SpeedWave: 0.28
+    - _alpha: 0.88
+    - _displacement: 0.02
+    - _normalStrenght: 2.89
     m_Colors:
-    - _WaterColor: {r: 0.14786398, g: 0.49424714, b: 0.6698113, a: 0}
+    - _WaterColor: {r: 0.094117634, g: 0.29871595, b: 0.49019608, a: 0}
   m_BuildTextureStacks: []

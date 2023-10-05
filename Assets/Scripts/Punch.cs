@@ -7,19 +7,19 @@ public class Punch : MonoBehaviour
 {
 
     //[SerializeField] private Health _health; 
-    public List<Health> Enemies=new List<Health> ();
+    public List<Health> Enemies = new List<Health>();
     //[SerializeField] private Transform _targetHand;
     //[SerializeField] private Transform _targetEnemy;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void FixedUpdate()
@@ -31,10 +31,7 @@ public class Punch : MonoBehaviour
         }*/
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        //PunchEnemy();
-    }
+
 
     /*
     private void SeekEnemy()
@@ -42,7 +39,7 @@ public class Punch : MonoBehaviour
         if (_targetEnemy != null)
         {
             float moveSpeed = 2;
-            // Calcula la dirección hacia el objetivo
+            // Calcula la direcci?n hacia el objetivo
             Vector3 directionToTarget = _targetEnemy.position - _targetHand.position;
 
             // Mira siempre hacia el objetivo
@@ -56,11 +53,22 @@ public class Punch : MonoBehaviour
     public void PunchEnemy()
     {
 
+        /*
+        if(TryGetComponent<Health>(out Health enemyHealth))
+        {
+            enemyHealth._currentHealth-=1;
+            enemyHealth.Damage();
+        }*/
+
         foreach (Health enemy in Enemies)
         {
-            Debug.Log("Pum Pum fan de la CQ");
-            enemy._currentHealth -=1;
-            enemy.Damage();
+            if (TryGetComponent<Health>(out Health enemyHealth))
+            {
+                Debug.Log("Pum Pum fan de la CQ");
+                enemy._currentHealth -= 1;
+                enemy.Damage();
+            }
+
         }
     }
 }

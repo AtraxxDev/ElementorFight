@@ -19,11 +19,11 @@ public class MoveTarget : MonoBehaviour
         transform.Translate(movementDirection.normalized*speed*Time.deltaTime);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("HitEnemy");
+            Debug.LogWarning("HitEnemy");
             punchRef.PunchEnemy();
         }
         
