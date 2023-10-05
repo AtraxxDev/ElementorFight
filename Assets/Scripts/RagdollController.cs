@@ -47,7 +47,7 @@ public class RagdollController : MonoBehaviour
         }
 
     }
-    bool value = true;
+   public bool value = true;
     public void Toggle()
     {
         value = !value;
@@ -71,7 +71,7 @@ public class RagdollController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.transform.tag == "hit")
+        if(collision.transform.tag == "Hit")
         {
             value = true;
             Toggle();
